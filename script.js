@@ -1,4 +1,4 @@
-// script.js (Final v3.2 - RealName + Banter Edition, GitHub Ready)
+// script.js (Final v3.2 - GitHub Pages Fix + OAuth Callback + Banter Edition)
 
 // ============ CONFIG ============
 const SUPABASE_URL = "https://dxdgokgdjglycvckoudc.supabase.co";
@@ -54,18 +54,21 @@ const BANTER = {
 
 // ============ AUTH ============
 loginBtn.addEventListener('click', async ()=>{
-  try { await sb.auth.signInWithOAuth({
-  provider: 'google',
-  options: { redirectTo: 'https://arm-hub69.github.io/Leave-board/callback.html' }
-
+  try {
+    await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: 'https://arm-hub69.github.io/Leave-board/callback.html' }
+    });
+  } catch(e) {
+    alert('Login failed: '+(e.message||e.error_description||e));
+  }
 });
 
-  catch(e){ alert('Login failed: '+(e.message||e.error_description||e)); }
-});
 logoutBtn.addEventListener('click', async ()=>{
   await sb.auth.signOut();
   location.reload();
 });
+
 sb.auth.onAuthStateChange((event, session)=>{
   currentUser = session?.user ?? null;
   loginBtn.style.display = currentUser ? 'none':'inline-block';
@@ -237,11 +240,6 @@ document.getElementById('prevMonth').addEventListener('click',async()=>{const d=
 document.getElementById('nextMonth').addEventListener('click',async()=>{const d=new Date(viewYear,viewMonth+1,1);await loadMonth(d.getFullYear(),d.getMonth());});
 monthPicker.addEventListener('change',async()=>{const [y,mm]=monthPicker.value.split('-').map(Number);await loadMonth(y,mm-1);});
 leaderMonth.addEventListener('change',()=>{const [y,mm]=leaderMonth.value.split('-').map(Number);renderLeaderboardFor(y,mm-1);});
-// ============ RESTORE SESSION FROM HASH ============
-(async () => {
-  const { data, error } = await sb.auth.getSessionFromUrl({ storeSession: true });
-  if (!error) location.replace('https://arm-hub69.github.io/Leave-board/');
-})();
 
 // ============ BOOT ============
 (async function(){
@@ -254,17 +252,8 @@ leaderMonth.addEventListener('change',()=>{const [y,mm]=leaderMonth.value.split(
   renderDayPanel(todayStr); highlightSelected(todayStr);
 })();
 
-// ============ SERVICE WORKER (GitHub Pages Ready) ============
-if('serviceWorker' in navigator){
-  window.addEventListener('load', async ()=>{
-    try {
-      await navigator.serviceWorker.register('./sw.js');
-      console.log('SW registered');
-    } catch(e){
-      console.warn('SW register failed', e);
-    }
-  });
-}
-
-
-
+// ============ RESTORE SESSION FROM HASH ============
+(async () => {
+  const { data, error } = await sb.auth.getSessionFromUrl({ storeSession: true });
+  if (!error) location.replace('https://arm-hub69.github.io/Leave-board/');
+})();
