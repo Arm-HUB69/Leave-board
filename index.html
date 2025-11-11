@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PCG Leave Board • v3 (Leaderboard)</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0a2740">
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="brand">
+      <img src="icons/logo.png" alt="PCG" class="logo" />
+      <div class="brand-texts">
+        <div class="title">PCG Leave Board</div>
+        <div class="subtitle">Mobile-first • v3</div>
+      </div>
+    </div>
+    <div class="auth-row">
+      <button id="loginBtn" class="btn login">Login</button>
+      <button id="logoutBtn" class="btn logout" style="display:none">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="top-row">
+      <div class="stat card">
+        <div class="stat-num" id="totalMonth">0</div>
+        <div class="stat-label">รวมลา (เดือน)</div>
+      </div>
+      <div class="stat card">
+        <div class="stat-num" id="topTeam">-</div>
+        <div class="stat-label">ทีมมากสุด</div>
+      </div>
+      <div class="stat card">
+        <div class="stat-num" id="topType">-</div>
+        <div class="stat-label">ประเภทยอดนิยม</div>
+      </div>
+    </section>
+
+    <section class="month-bar card">
+      <button id="prevMonth" class="nav-btn" title="เดือนก่อน">‹</button>
+      <div id="monthLabel" class="month-label"></div>
+      <button id="nextMonth" class="nav-btn" title="เดือนถัดไป">›</button>
+      <input id="monthPicker" type="month" class="month-picker" />
+    </section>
+
+    <section class="calendar-wrapper card">
+      <div class="weekday-header">
+        <div>อา</div><div>จ</div><div>อ</div><div>พ</div><div>พฤ</div><div>ศ</div><div>ส</div>
+      </div>
+      <div id="calGrid" class="calendar-grid"></div>
+    </section>
+
+    <section id="dayPanel" class="card day-panel">
+      <h3 id="dayTitle">เลือกวันที่เพื่อดูรายละเอียด</h3>
+      <div id="leaveList" class="leave-list"></div>
+    </section>
+
+    <section class="card summary">
+      <h3>สรุปภาพรวมเดือนนี้</h3>
+      <div class="chart-and-actions">
+        <div class="chart-wrapper">
+          <canvas id="summaryChart" height="140"></canvas>
+        </div>
+        <div class="summary-actions">
+          <button id="exportCsv" class="btn download">⬇️ Export CSV</button>
+          <button id="adminViewBtn" class="btn ghost" style="display:none">Admin View</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leaderboard Card (under summary) -->
+    <section id="leaderboardCard" class="card leaderboard">
+      <div class="leaderboard-header">
+        <h3>🏆 Leave Leaderboard</h3>
+        <div class="lb-right">
+          <label for="leaderMonth">เลือกเดือน</label>
+          <input id="leaderMonth" type="month" />
+          <button id="viewAllBtn" class="btn ghost">ดูทั้งหมด</button>
+        </div>
+      </div>
+
+      <div id="leaderboardContent" class="leaderboard-content">
+        <!-- Top3 will render here -->
+      </div>
+    </section>
+
+  </main>
+
+  <button id="fabAdd" class="fab" title="แจ้งลา">+</button>
+
+  <!-- Modal: add / edit -->
+  <div id="leaveModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button id="closeLeaveModal" class="close">&times;</button>
+      <h3 id="modalTitle">+ แจ้งลา</h3>
+
+      <form id="leaveForm" class="form">
+        <label>วันที่</label>
+        <input id="leaveDate" type="date" required>
+
+        <label>ทีม</label>
+        <select id="teamSelect" required></select>
+
+        <label>ชื่อพนักงาน</label>
+        <select id="empSelect" required></select>
+
+        <label>กะ (Shift)</label>
+        <select id="shiftSelect">
+          <option value="เช้า">เช้า</option>
+          <option value="ดึก">ดึก</option>
+        </select>
+
+        <label>ประเภทลา</label>
+        <select id="typeSelect">
+          <option value="ลากิจ">ลากิจ</option>
+          <option value="ลาป่วย">ลาป่วย</option>
+          <option value="ลาพักร้อน">ลาพักร้อน</option>
+          <option value="อื่นๆ">อื่นๆ</option>
+        </select>
+
+        <div class="form-actions">
+          <button type="submit" class="btn submit">บันทึก</button>
+          <button type="button" id="cancelBtn" class="btn ghost">ยกเลิก</button>
+        </div>
+      </form>
+
+      <div id="modalMsg" class="muted small"></div>
+    </div>
+  </div>
+
+  <footer class="footer">Made for PCG • Mobile-first • Supabase • v3</footer>
+
+  <!-- libs -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
