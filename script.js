@@ -237,6 +237,11 @@ document.getElementById('prevMonth').addEventListener('click',async()=>{const d=
 document.getElementById('nextMonth').addEventListener('click',async()=>{const d=new Date(viewYear,viewMonth+1,1);await loadMonth(d.getFullYear(),d.getMonth());});
 monthPicker.addEventListener('change',async()=>{const [y,mm]=monthPicker.value.split('-').map(Number);await loadMonth(y,mm-1);});
 leaderMonth.addEventListener('change',()=>{const [y,mm]=leaderMonth.value.split('-').map(Number);renderLeaderboardFor(y,mm-1);});
+// ============ RESTORE SESSION FROM HASH ============
+(async () => {
+  const { data, error } = await sb.auth.getSessionFromUrl({ storeSession: true });
+  if (!error) location.replace('https://arm-hub69.github.io/Leave-board/');
+})();
 
 // ============ BOOT ============
 (async function(){
@@ -260,5 +265,6 @@ if('serviceWorker' in navigator){
     }
   });
 }
+
 
 
