@@ -54,7 +54,11 @@ const BANTER = {
 
 // ============ AUTH ============
 loginBtn.addEventListener('click', async ()=>{
-  try { await sb.auth.signInWithOAuth({ provider: 'google' }); }
+  try { await sb.auth.signInWithOAuth({
+  provider: 'google',
+  options: { redirectTo: 'https://arm-hub69.github.io/Leave-board/' }
+});
+
   catch(e){ alert('Login failed: '+(e.message||e.error_description||e)); }
 });
 logoutBtn.addEventListener('click', async ()=>{
@@ -255,3 +259,4 @@ if('serviceWorker' in navigator){
     }
   });
 }
+
