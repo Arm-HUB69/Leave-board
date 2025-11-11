@@ -1,4 +1,4 @@
-// script.js (Final v3.1 - RealName + Banter Edition)
+// script.js (Final v3.2 - RealName + Banter Edition, GitHub Ready)
 
 // ============ CONFIG ============
 const SUPABASE_URL = "https://dxdgokgdjglycvckoudc.supabase.co";
@@ -242,7 +242,16 @@ leaderMonth.addEventListener('change',()=>{const [y,mm]=leaderMonth.value.split(
   await loadMonth(viewYear,viewMonth);
   const todayStr=`${viewYear}-${pad2(viewMonth+1)}-${pad2(now.getDate())}`;
   renderDayPanel(todayStr); highlightSelected(todayStr);
-  navigator.serviceWorker.register('./sw.js');
-
 })();
 
+// ============ SERVICE WORKER (GitHub Pages Ready) ============
+if('serviceWorker' in navigator){
+  window.addEventListener('load', async ()=>{
+    try {
+      await navigator.serviceWorker.register('./sw.js');
+      console.log('SW registered');
+    } catch(e){
+      console.warn('SW register failed', e);
+    }
+  });
+}
