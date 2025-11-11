@@ -56,7 +56,8 @@ const BANTER = {
 loginBtn.addEventListener('click', async ()=>{
   try { await sb.auth.signInWithOAuth({
   provider: 'google',
-  options: { redirectTo: 'https://arm-hub69.github.io/Leave-board/' }
+  options: { redirectTo: 'https://arm-hub69.github.io/Leave-board/callback.html' }
+
 });
 
   catch(e){ alert('Login failed: '+(e.message||e.error_description||e)); }
@@ -259,4 +260,5 @@ if('serviceWorker' in navigator){
     }
   });
 }
+
 
