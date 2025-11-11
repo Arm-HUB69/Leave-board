@@ -242,4 +242,7 @@ leaderMonth.addEventListener('change',()=>{const [y,mm]=leaderMonth.value.split(
   await loadMonth(viewYear,viewMonth);
   const todayStr=`${viewYear}-${pad2(viewMonth+1)}-${pad2(now.getDate())}`;
   renderDayPanel(todayStr); highlightSelected(todayStr);
+  navigator.serviceWorker.register('./sw.js');
+
 })();
+
